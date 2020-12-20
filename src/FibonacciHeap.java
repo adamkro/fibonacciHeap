@@ -18,6 +18,30 @@ public class FibonacciHeap
     private HeapNode min;
     private HeapNode root;
 
+
+
+    public void display() {
+        display(min);
+        System.out.println();
+    }
+
+    private void display(HeapNode c) {
+        System.out.print("(");
+        if (c == null) {
+            System.out.print(")");
+            return;
+        } else {
+            HeapNode temp = c;
+            do {
+                System.out.print(temp.getKey());
+                HeapNode k = temp.getChild();
+                display(k);
+                System.out.print("->");
+                temp = temp.getRight();
+            } while (temp != c);
+            System.out.print(")");
+        }
+    }
    /**
     * public boolean isEmpty()
     *
@@ -167,7 +191,8 @@ public class FibonacciHeap
             y = x;
             x = tmp;
         }
-        y.insertBetween(x.getChild().getLeft(), x.getChild());
+        if (x.getDegree() > 0)
+            y.insertBetween(x.getChild().getLeft(), x.getChild());
         x.setChild(y);
         y.setParent(x);
         x.changeDegreeBy(1);
@@ -185,7 +210,7 @@ public class FibonacciHeap
     *
     */
     public HeapNode findMin(){
-    	return min;// should be replaced by student code
+    	return min;
     }
 
    /**
@@ -226,6 +251,8 @@ public class FibonacciHeap
     */
     public int[] countersRep()
     {
+    if (isEmpty())
+        return new int[0];
     int maxDegree = 0;
 	int[] arr = new int[(int)Math.ceil(Math.log(size)/Math.log(2))];
     HeapNode node = root;
@@ -255,13 +282,11 @@ public class FibonacciHeap
         if (this.isEmpty())
             return;
         HeapNode minHeap = findMin();
-    	if (x == minHeap)
-    	    deleteMin();
-    	else{
-    	    int delta = (x.getKey() - minHeap.getKey());
+    	if (x != minHeap) {
+            int delta = (x.getKey() - minHeap.getKey());
     	    decreaseKey(x, delta+1);
-    	    deleteMin();
         }
+        deleteMin();
     }
 
    /**
@@ -457,6 +482,11 @@ public class FibonacciHeap
            this.mark = mark;
        }
 
-
+       @Override
+       public String toString() {
+           return
+                   left.getKey() + "<-- " + key + " ("+degree+ ") " + " --->" + right.getKey() +
+                   '}';
+       }
    }
 }
