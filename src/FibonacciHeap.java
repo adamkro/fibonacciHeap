@@ -21,7 +21,7 @@ public class FibonacciHeap
 
 
     public void display() {
-        display(min);
+        display(root);
         System.out.println();
     }
 
