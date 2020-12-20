@@ -185,7 +185,7 @@ public class FibonacciHeap
     *
     */
     public HeapNode findMin(){
-    	return new HeapNode(0);// should be replaced by student code
+    	return min;// should be replaced by student code
     }
 
    /**
@@ -252,7 +252,16 @@ public class FibonacciHeap
     */
     public void delete(HeapNode x)
     {
-    	return; // should be replaced by student code
+        if (this.isEmpty())
+            return;
+        HeapNode minHeap = findMin();
+    	if (x == minHeap)
+    	    deleteMin();
+    	else{
+    	    int delta = (x.getKey() - minHeap.getKey());
+    	    decreaseKey(x, delta+1);
+    	    deleteMin();
+        }
     }
 
    /**
