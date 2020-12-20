@@ -134,6 +134,7 @@ public class FibonacciHeap
     public void makeHeapFromBuckets (HeapNode[] Buckets){
         potentialTrees = 0;
         HeapNode rootNode = null;
+        HeapNode newMin = null;
         for (HeapNode node: Buckets){
             if (node != null){
                 potentialTrees++;
@@ -143,18 +144,19 @@ public class FibonacciHeap
                 }
                 if (rootNode == null){
                     rootNode = node;
+                    newMin = node;
                     node.setRight(node);
                     node.setLeft(node);
                 }
                 else{
-                    node.insertBetween(rootNode,rootNode.getRight());
-                    if (node.getKey() < rootNode.getKey())
-                        rootNode = node;
+                    node.insertBetween(rootNode.getLeft(),rootNode);
+                    if (node.getKey() < newMin.getKey())
+                        newMin = node;
                 }
             }
         }
        root = rootNode;
-       min =  rootNode;
+       min =  newMin;
     }
 
     public HeapNode link (HeapNode x,HeapNode y){
