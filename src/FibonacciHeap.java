@@ -18,18 +18,19 @@ public class FibonacciHeap
     private HeapNode min;
     private HeapNode root;
 
-   /**
-    * public boolean isEmpty()
-    *
-    * precondition: none
-    *
-    * The method returns true if and only if the heap
-    * is empty.
-    *
-    */
+    /**
+     * public boolean isEmpty()
+     *
+     * precondition: none
+     *
+     * The method returns true if and only if the heap
+     * is empty.
+     *
+     */
+
     public boolean isEmpty()
     {
-    	return size == 0;
+        return size == 0;
     }
 
     public HeapNode getRoot()
@@ -51,14 +52,37 @@ public class FibonacciHeap
         return potentialMarks;
     }
 
+    public void display() {
+        display(root);
+        System.out.println();
+    }
 
-    /**
-    * public HeapNode insert(int key)
-    *
-    * Creates a node (of type HeapNode) which contains the given key, and inserts it into the heap.
-    *
-    * Returns the new node created.
-    */
+    private void display(HeapNode c) {
+        System.out.print("(");
+        if (c == null) {
+            System.out.print(")");
+            return;
+        } else {
+            HeapNode temp = c;
+            do {
+                System.out.print(temp.getKey());
+                HeapNode k = temp.getChild();
+                display(k);
+                System.out.print("->");
+                temp = temp.getRight();
+            } while (temp != c);
+            System.out.print(")");
+        }
+    }
+
+
+        /**
+         * public HeapNode insert(int key)
+         *
+         * Creates a node (of type HeapNode) which contains the given key, and inserts it into the heap.
+         *
+         * Returns the new node created.
+         */
     public HeapNode insert(int key){
         HeapNode node = new HeapNode(key);
         insertNode(node);
@@ -83,23 +107,23 @@ public class FibonacciHeap
             min = node;
     }
 
-   /**
-    * public void deleteMin()
-    *
-    * Delete the node containing the minimum key.
-    *
-    */
+    /**
+     * public void deleteMin()
+     *
+     * Delete the node containing the minimum key.
+     *
+     */
     public void deleteMin()
     {
-     	if (isEmpty())
-     	    return;
-     	size--;
-     	HeapNode minNode = min;
-     	if (minNode.getChild() == null){
+        if (isEmpty())
+            return;
+        size--;
+        HeapNode minNode = min;
+        if (minNode.getChild() == null){
             minNode.getLeft().setRight(minNode.getRight());
             minNode.getRight().setLeft(minNode.getLeft());
         }
-     	else{
+        else{
             HeapNode minchild = minNode.getChild();
             minchild.insertBetween(minNode.getLeft(),minNode.getRight());
             for (int i = 1; i <= minNode.getDegree() ; i++){ //לבדוק אם הפור באמת עובד או צריך לשנות לwhile
@@ -108,7 +132,7 @@ public class FibonacciHeap
                 //האם צריך לעשות אנמארקד?
             }
         }
-     	successiveLinking(getRoot());
+        successiveLinking(getRoot());
     }
 
     public void successiveLinking (HeapNode x){
@@ -155,8 +179,8 @@ public class FibonacciHeap
                 }
             }
         }
-       root = rootNode;
-       min =  newMin;
+        root = rootNode;
+        min =  newMin;
     }
 
     public HeapNode link (HeapNode x,HeapNode y){
@@ -167,7 +191,9 @@ public class FibonacciHeap
             y = x;
             x = tmp;
         }
-        y.insertBetween(x.getChild().getLeft(), x.getChild());
+        if (x.getDegree() > 0){
+            y.insertBetween(x.getChild().getLeft(), x.getChild());
+        }
         x.setChild(y);
         y.setParent(x);
         x.changeDegreeBy(1);
@@ -179,91 +205,96 @@ public class FibonacciHeap
 
 
     /**
-    * public HeapNode findMin()
-    *
-    * Return the node of the heap whose key is minimal.
-    *
-    */
+     * public HeapNode findMin()
+     *
+     * Return the node of the heap whose key is minimal.
+     *
+     */
     public HeapNode findMin(){
-    	return new HeapNode(0);// should be replaced by student code
-    }
-
-   /**
-    * public void meld (FibonacciHeap heap2)
-    *
-    * Meld the heap with heap2
-    *
-    */
-   public void meld (FibonacciHeap heap2) {
-       if (heap2.isEmpty())
-           return;
-       if (this.isEmpty())
-           root = heap2.getRoot();
-       else
-           heap2.getRoot().insertBetween(root.left, root);
-       updateMin(heap2.getMin());
-       potentialTrees += heap2.getPotentialTrees();
-       potentialMarks += heap2.getPotentialMarks();
-       size += heap2.size();
-   }
-
-   // 1 --> 2 --> 3 --> 4 -- > 5 --> heap2 --> heap2 --> heap2
-   /**
-    * public int size()
-    *
-    * Return the number of elements in the heap
-    *
-    */
-    public int size(){
-    	return this.size;
+        return min;
     }
 
     /**
-    * public int[] countersRep()
-    *
-    * Return a counters array, where the value of the i-th entry is the number of trees of order i in the heap.
-    *
-    */
-    public int[] countersRep()
-    {
-    int maxDegree = 0;
-	int[] arr = new int[(int)Math.ceil(Math.log(size)/Math.log(2))];
-    HeapNode node = root;
-    do {
-        int degree = node.getDegree();
-        arr[degree]++;
-        if (degree > maxDegree)
-            maxDegree = degree;
-        node = node.getRight();
-    } while (node != root);
-	if (maxDegree + 1 < arr.length){
-        int[] correctArr;
-        correctArr= Arrays.copyOf(arr,maxDegree + 1 );
-        return correctArr;
-    }
-    return arr;
+     * public void meld (FibonacciHeap heap2)
+     *
+     * Meld the heap with heap2
+     *
+     */
+    public void meld (FibonacciHeap heap2) {
+        if (heap2.isEmpty())
+            return;
+        if (this.isEmpty())
+            root = heap2.getRoot();
+        else
+            heap2.getRoot().insertBetween(root.left, root);
+        updateMin(heap2.getMin());
+        potentialTrees += heap2.getPotentialTrees();
+        potentialMarks += heap2.getPotentialMarks();
+        size += heap2.size();
     }
 
-   /**
-    * public void delete(HeapNode x)
-    *
-    * Deletes the node x from the heap.
-    *
-    */
+    // 1 --> 2 --> 3 --> 4 -- > 5 --> heap2 --> heap2 --> heap2
+    /**
+     * public int size()
+     *
+     * Return the number of elements in the heap
+     *
+     */
+    public int size(){
+        return this.size;
+    }
+
+    /**
+     * public int[] countersRep()
+     *
+     * Return a counters array, where the value of the i-th entry is the number of trees of order i in the heap.
+     *
+     */
+    public int[] countersRep(){
+        if (isEmpty())
+            return new int[0];
+        int maxDegree = 0;
+        int[] arr = new int[(int)Math.ceil(Math.log(size)/Math.log(2))];
+        HeapNode node = root;
+        do {
+            int degree = node.getDegree();
+            arr[degree]++;
+            if (degree > maxDegree)
+                maxDegree = degree;
+            node = node.getRight();
+        } while (node != root);
+        if (maxDegree + 1 < arr.length){
+            int[] correctArr;
+            correctArr= Arrays.copyOf(arr,maxDegree + 1 );
+            return correctArr;
+        }
+        return arr;
+    }
+
+    /**
+     * public void delete(HeapNode x)
+     *
+     * Deletes the node x from the heap.
+     *
+     */
     public void delete(HeapNode x)
     {
-    	return; // should be replaced by student code
+        if (this.isEmpty())
+            return;
+        if (x != min)
+            decreaseKey(x, x.getKey() - min.getKey() + 1);
+        deleteMin();
     }
 
-   /**
-    * public void decreaseKey(HeapNode x, int delta)
-    *
-    * The function decreases the key of the node x by delta. The structure of the heap should be updated
-    * to reflect this chage (for example, the cascading cuts procedure should be applied if needed).
-    */
+    /**
+     * public void decreaseKey(HeapNode x, int delta)
+     *
+     * The function decreases the key of the node x by delta. The structure of the heap should be updated
+     * to reflect this chage (for example, the cascading cuts procedure should be applied if needed).
+     */
     public void decreaseKey(HeapNode x, int delta)
     {
-    	x.decreaseBy(delta);
+        x.decreaseBy(delta);
         if (x.getParent() == null) {
             updateMin(x);
             return;
@@ -308,146 +339,159 @@ public class FibonacciHeap
 
 
 
-   /**
-    * public int potential()
-    *
-    * This function returns the current potential of the heap, which is:
-    * Potential = #trees + 2*#marked
-    * The potential equals to the number of trees in the heap plus twice the number of marked nodes in the heap.
-    */
+    /**
+     * public int potential()
+     *
+     * This function returns the current potential of the heap, which is:
+     * Potential = #trees + 2*#marked
+     * The potential equals to the number of trees in the heap plus twice the number of marked nodes in the heap.
+     */
     public int potential()
     {
-    	return potentialTrees + 2*potentialMarks; // should be replaced by student code
+        return potentialTrees + 2*potentialMarks; // should be replaced by student code
     }
 
-   /**
-    * public static int totalLinks()
-    *
-    * This static function returns the total number of link operations made during the run-time of the program.
-    * A link operation is the operation which gets as input two trees of the same rank, and generates a tree of
-    * rank bigger by one, by hanging the tree which has larger value in its root on the tree which has smaller value
-    * in its root.
-    */
+    /**
+     * public static int totalLinks()
+     *
+     * This static function returns the total number of link operations made during the run-time of the program.
+     * A link operation is the operation which gets as input two trees of the same rank, and generates a tree of
+     * rank bigger by one, by hanging the tree which has larger value in its root on the tree which has smaller value
+     * in its root.
+     */
     public static int totalLinks()
     {
-    	return linksCount;
+        return linksCount;
     }
 
-   /**
-    * public static int totalCuts()
-    *
-    * This static function returns the total number of cut operations made during the run-time of the program.
-    * A cut operation is the operation which diconnects a subtree from its parent (during decreaseKey/delete methods).
-    */
+    /**
+     * public static int totalCuts()
+     *
+     * This static function returns the total number of cut operations made during the run-time of the program.
+     * A cut operation is the operation which diconnects a subtree from its parent (during decreaseKey/delete methods).
+     */
     public static int totalCuts()
     {
-    	return cutsCount;
+        return cutsCount;
     }
 
-     /**
-    * public static int[] kMin(FibonacciHeap H, int k)
-    *
-    * This static function returns the k minimal elements in a binomial tree H.
-    * The function should run in O(k*deg(H)).
-    * You are not allowed to change H.
-    */
-    public static int[] kMin(FibonacciHeap H, int k)
-    {
-        int[] arr = new int[42];
-        return arr; // should be replaced by student code
-    }
+    /**
+     * public static int[] kMin(FibonacciHeap H, int k)
+     *
+     * This static function returns the k minimal elements in a binomial tree H.
+     * The function should run in O(k*deg(H)).
+     * You are not allowed to change H.
+     */
+//    public static int[] kMin(FibonacciHeap H, int k)
+//    {
+//        if (H == null || H.isEmpty() || k == 0)
+//            return new int[0];
+//        int[] arr = new int[k];
+//        HeapNode node = H.getRoot();
+//        int min = 0;
+//        while(k > 0){
+//            #################
+//            node = node.getRight();
+//        }
+//        return arr;
+//    }
 
-   /**
-    * public class HeapNode
-    *
-    * If you wish to implement classes other than FibonacciHeap
-    * (for example HeapNode), do it in this file, not in
-    * another file
-    *
-    */
+    /**
+     * public class HeapNode
+     *
+     * If you wish to implement classes other than FibonacciHeap
+     * (for example HeapNode), do it in this file, not in
+     * another file
+     *
+     */
     public class HeapNode{
 
-	public int key;
-	private boolean mark;
-	private HeapNode parent;
-	private HeapNode child;
-	private HeapNode left;
-    private HeapNode right;
-    private int degree;
+        public int key;
+        private boolean mark;
+        private HeapNode parent;
+        private HeapNode child;
+        private HeapNode left;
+        private HeapNode right;
+        private int degree;
 
-  	public HeapNode(int key) {
-  	    this.key = key;
-  	    this.mark = false;
-  	    this.parent = null;
-        this.child = null;
-        this.left = this;
-        this.right = this;
-        this.degree = 0;
-      }
+        public HeapNode(int key) {
+            this.key = key;
+            this.mark = false;
+            this.parent = null;
+            this.child = null;
+            this.left = this;
+            this.right = this;
+            this.degree = 0;
+        }
 
-       public HeapNode getParent() {
-           return parent;
-       }
+        public HeapNode getParent() {
+            return parent;
+        }
 
-       public HeapNode getLeft() {
-           return left;
-       }
+        public HeapNode getLeft() {
+            return left;
+        }
 
-       public HeapNode getRight() {
-           return right;
-       }
+        public HeapNode getRight() {
+            return right;
+        }
 
-       public HeapNode getChild() {
-           return child;
-       }
+        public HeapNode getChild() {
+            return child;
+        }
 
-       public int getDegree() {
-           return degree;
-       }
+        public int getDegree() {
+            return degree;
+        }
 
-       public boolean isMarked() {
-           return mark;
-       }
+        public boolean isMarked() {
+            return mark;
+        }
 
-       private void decreaseBy(int delta) {
-           key -= delta;
-       }
+        private void decreaseBy(int delta) {
+            key -= delta;
+        }
 
-       private void insertBetween(HeapNode start, HeapNode end ){
-           this.left.right = end; // last --> end
-           end.left = this.left; // last <-- end
-           this.left = start; // start <-- first
-           start.right = this; // start --> first
-       }
+        private void insertBetween(HeapNode start, HeapNode end ){
+            this.left.right = end; // last --> end
+            end.left = this.left; // last <-- end
+            this.left = start; // start <-- first
+            start.right = this; // start --> first
+        }
 
-       public int getKey() {
-	    return this.key;
-      }
+        public int getKey() {
+            return this.key;
+        }
 
-       private void setParent(HeapNode parent) {
-           this.parent = parent;
-       }
+        private void setParent(HeapNode parent) {
+            this.parent = parent;
+        }
 
-       private void setRight(HeapNode right) {
-           this.right = right;
-       }
+        private void setRight(HeapNode right) {
+            this.right = right;
+        }
 
-       private void changeDegreeBy(int delta) {
-           this.degree += delta;
-       }
+        private void changeDegreeBy(int delta) {
+            this.degree += delta;
+        }
 
-       private void setLeft(HeapNode left) {
-           this.left = left;
-       }
+        private void setLeft(HeapNode left) {
+            this.left = left;
+        }
 
-       private void setChild(HeapNode child) {
-           this.child = child;
-       }
+        private void setChild(HeapNode child) {
+            this.child = child;
+        }
 
-       private void setMark(boolean mark) {
-           this.mark = mark;
-       }
+        private void setMark(boolean mark) {
+            this.mark = mark;
+        }
 
-
-   }
+        @Override
+        public String toString() {
+            return
+                    "key=" + key +
+                            "  degree=" + degree;
+        }
+    }
 }
