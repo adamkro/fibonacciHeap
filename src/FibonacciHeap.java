@@ -147,6 +147,8 @@ public class FibonacciHeap
         while (x != null){
             HeapNode node = x;
             x = x.getRight();
+            node.setLeft(node);
+            node.setRight(node);
             while (Buckets[node.getDegree()] != null) {
                 node = link(node,Buckets[node.getDegree()]);
                 Buckets[node.getDegree()-1] = null;
@@ -484,8 +486,12 @@ public class FibonacciHeap
 
        @Override
        public String toString() {
+        String l = left != null ? ""+left.getKey(): "";
+        String r = right != null ? ""+right.getKey(): "";
+
+
            return
-                   left.getKey() + "<-- " + key + " ("+degree+ ") " + " --->" + right.getKey() +
+                   l + "<-- " + key + " ("+degree+ ") " + " --->" + r +
                    '}';
        }
    }
