@@ -53,7 +53,11 @@ public class FibonacciHeap
         do {
             if (node == min)
                 row.append("*");
-            row.append(node.getKey()).append(" --> ");
+            row
+                    .append(node.getKey())
+                    .append("(")
+                    .append(node.getDegree())
+                    .append(") --> ");
             node = node.getRight();
         } while (node != r);
         System.out.println(row.toString());
