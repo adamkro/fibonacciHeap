@@ -1,6 +1,7 @@
 import com.sun.deploy.security.SelectableSecurityManager;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * FibonacciHeap
@@ -17,7 +18,6 @@ public class FibonacciHeap
     private int potentialMarks = 0;
     private HeapNode min;
     private HeapNode root;
-
 
 
     public void display() {
@@ -41,6 +41,22 @@ public class FibonacciHeap
             } while (temp != c);
             System.out.print(")");
         }
+    }
+    public void displayRoots(){
+        if (isEmpty()){
+            System.out.println("Roots: []");
+            return;
+        }
+        HeapNode node = root;
+        HeapNode r = root;
+        StringBuilder row = new StringBuilder("Roots: ");
+        do {
+            if (node == min)
+                row.append("*");
+            row.append(node.getKey()).append(" --> ");
+            node = node.getRight();
+        } while (node != r);
+        System.out.println(row.toString());
     }
    /**
     * public boolean isEmpty()
@@ -136,7 +152,7 @@ public class FibonacciHeap
     }
 
     public void successiveLinking (HeapNode x){
-        HeapNode[] Buckets = new HeapNode[(int)Math.ceil(Math.log(size)/Math.log(2))];
+        HeapNode[] Buckets = new HeapNode[(int)Math.ceil(Math.log(size)/Math.log(2))+1];
         //לוודא שהדליים מאותחילם ל-null
         nodesToBuckets(x,Buckets);
         makeHeapFromBuckets(Buckets);
