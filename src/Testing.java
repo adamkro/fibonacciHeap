@@ -17,8 +17,11 @@ public class Testing {
 //        h.deleteMin();
 //        printHeap.printHeapFib(h);
 //        h.displayRoots();
+        System.out.println(h.findMin().getKey());
+        h.displayRoots();
         h.deleteMin();
         System.out.println(h.findMin().getKey());
+        h.displayRoots();
         h.deleteMin();
         System.out.println(h.findMin().getKey());
         h.deleteMin();

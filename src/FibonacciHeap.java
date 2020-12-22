@@ -142,17 +142,33 @@ public class FibonacciHeap
      	if (minNode.getChild() == null){
             minNode.getLeft().setRight(minNode.getRight());
             minNode.getRight().setLeft(minNode.getLeft());
+            if (size() != 0)
+                successiveLinking(minNode.getRight());
         }
      	else{
             HeapNode minchild = minNode.getChild();
-            minchild.insertBetween(minNode.getLeft(),minNode.getRight());
-            for (int i = 1; i <= minNode.getDegree() ; i++){ //לבדוק אם הפור באמת עובד או צריך לשנות לwhile
+            minNode.setChild(null);
+            if (minNode.getRight()!= minNode)
+                 insertChain(minchild,minchild.getLeft(),minNode.getLeft(),minNode.getRight());
+//            for (int i = 1; i <= minNode.getDegree() ; i++){ //לבדוק אם הפור באמת עובד או צריך לשנות לwhile
+//                minchild.setParent(null);
+//                minchild = minchild.getRight();
+//                //האם צריך לעשות אנמארקד?
+//            }
+            while (minchild.getParent() != null) {
+                HeapNode x = minchild.getRight();
                 minchild.setParent(null);
-                minchild = minchild.getRight();
-                //האם צריך לעשות אנמארקד?
+                minchild = x;
             }
+        successiveLinking(minchild);
         }
-     	successiveLinking(getRoot());
+    }
+
+    private void insertChain(HeapNode startChain, HeapNode endCHain, HeapNode left, HeapNode right) {
+        startChain.setLeft(left);
+        left.setRight(startChain);
+        endCHain.setRight(right);
+        right.setLeft(endCHain);
     }
 
     public void successiveLinking (HeapNode x){
