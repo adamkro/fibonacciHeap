@@ -138,6 +138,13 @@ public class FibonacciHeap
      	if (isEmpty())
      	    return;
      	size--;
+        if (size == 0){
+            min = null;
+            root = null;
+            potentialMarks = 0;
+            potentialTrees = 0;
+            return;
+        }
      	HeapNode minNode = min;
      	if (minNode.getChild() == null){
             minNode.getLeft().setRight(minNode.getRight());

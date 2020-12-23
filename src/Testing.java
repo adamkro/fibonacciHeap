@@ -32,7 +32,8 @@ public class Testing {
         System.out.println(h.findMin().getKey());
         h.deleteMin();
         System.out.println(h.findMin());
-
+        h.deleteMin();
+        System.out.println(h.findMin());
     }
 
     public static void main(String[] args){
