@@ -107,7 +107,7 @@ public class FibonacciHeap
         HeapNode node = new HeapNode(key);
         insertNode(node);
         size++;
-        return new HeapNode(key); // should be replaced by student code
+        return node;
     }
 
     public void insertNode(HeapNode x){
@@ -377,9 +377,11 @@ public class FibonacciHeap
         else{
             if (parent.getChild() == x)
                 parent.setChild(x.getRight());
-            x.getLeft().setRight(x.getRight());
-            x.getRight().setLeft(x.getLeft());
+                x.getLeft().setRight(x.getRight());
+                x.getRight().setLeft(x.getLeft());
         }
+        x.setRight(x);
+        x.setLeft(x);
         insertNode(x);
     }
 
