@@ -294,7 +294,7 @@ public class FibonacciHeap
     if (isEmpty())
         return new int[0];
     int maxDegree = 0;
-	int[] arr = new int[(int)Math.ceil(Math.log(size)/Math.log(2))];
+	int[] arr = new int[(int)Math.ceil(Math.log(size)/Math.log(2))+1];
     HeapNode node = root;
     do {
         int degree = node.getDegree();

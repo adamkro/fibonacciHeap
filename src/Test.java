@@ -649,6 +649,10 @@ public class Test {
         fibonacciHeap.insert(3);
         fibonacciHeap.deleteMin();
 
+//        int first = FibonacciHeap.totalCuts() - cuts;
+//        int second = FibonacciHeap.totalLinks() - links;
+//        int third = fibonacciHeap.countersRep()[0];
+//        int fourth = fibonacciHeap.countersRep()[1];
         if (fibonacciHeap.potential() != 1 ||
                 FibonacciHeap.totalCuts() - cuts != 0 ||
                 FibonacciHeap.totalLinks() - links != 1 ||
