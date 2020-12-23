@@ -157,11 +157,6 @@ public class FibonacciHeap
             minNode.setChild(null);
             if (minNode.getRight()!= minNode)
                  insertChain(minchild,minchild.getLeft(),minNode.getLeft(),minNode.getRight());
-//            for (int i = 1; i <= minNode.getDegree() ; i++){ //לבדוק אם הפור באמת עובד או צריך לשנות לwhile
-//                minchild.setParent(null);
-//                minchild = minchild.getRight();
-//                //האם צריך לעשות אנמארקד?
-//            }
             while (minchild.getParent() != null) {
                 HeapNode x = minchild.getRight();
                 minchild.setParent(null);
@@ -434,8 +429,28 @@ public class FibonacciHeap
     */
     public static int[] kMin(FibonacciHeap H, int k)
     {
-        int[] arr = new int[42];
-        return arr; // should be replaced by student code
+        int[] arr = new int[k];
+        if(k == 0)
+            return arr;
+        FibonacciHeap h = new FibonacciHeap();
+        HeapNode node = H.getMin();
+        h.insert(node.getKey()).setTwin(node);
+        HeapNode headOfList;
+        for (int i = 0; i < k; i++) {
+            arr[i] = h.getMin().getKey();
+            node = h.getMin().getTwin().getChild();
+            h.deleteMin();
+            headOfList = node;
+            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            if (node != null && node.getKey() != arr[i]){ //CHECK IF ARR[I] NEEDED
+                do{
+                    h.insert(node.getKey()).setTwin(node);
+                    node = node.getRight();
+                }
+                while(node != null && node != headOfList);
+            }
+        }
+        return arr;
     }
 
    /**
@@ -454,17 +469,26 @@ public class FibonacciHeap
 	private HeapNode child;
 	private HeapNode left;
     private HeapNode right;
+    private HeapNode twin;
     private int degree;
+
 
   	public HeapNode(int key) {
   	    this.key = key;
   	    this.mark = false;
   	    this.parent = null;
         this.child = null;
+        this.twin = null;
         this.left = this;
         this.right = this;
         this.degree = 0;
       }
+       public HeapNode getTwin() {
+           return twin;
+       }
+       public void setTwin(HeapNode x) {
+           twin = x;
+       }
 
        public HeapNode getParent() {
            return parent;
