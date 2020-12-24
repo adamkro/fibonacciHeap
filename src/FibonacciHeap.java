@@ -10,8 +10,8 @@ import java.util.Stack;
  */
 public class FibonacciHeap
 {
-    private static int linksCount = 0;
-    private static int cutsCount = 0;
+    public static int linksCount = 0;
+    public static int cutsCount = 0;
 
     private int size = 0;
     private int potentialTrees = 0;
@@ -533,17 +533,17 @@ public class FibonacciHeap
            this.parent = parent;
        }
 
-       private void setRight(HeapNode right) {
+       public void setRight(HeapNode right) {
            this.right = right;
-       }
+       } ///////////// להחזיר לprivate
 
        private void changeDegreeBy(int delta) {
            this.degree += delta;
        }
 
-       private void setLeft(HeapNode left) {
+       public void setLeft(HeapNode left) {
            this.left = left;
-       }
+       } ///////////// להחזיר לprivate
 
        private void setChild(HeapNode child) {
            this.child = child;
