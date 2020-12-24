@@ -35,8 +35,4 @@ public class Testing {
         h.deleteMin();
         System.out.println(h.findMin());
     }
-
-    public static void main(String[] args){
-       manualTest();
-    }
 }
