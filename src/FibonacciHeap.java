@@ -441,8 +441,7 @@ public class FibonacciHeap
             node = h.getMin().getTwin().getChild();
             h.deleteMin();
             headOfList = node;
-            //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            if (node != null && node.getKey() != arr[i]){ //CHECK IF ARR[I] NEEDED
+            if (node != null){
                 do{
                     h.insert(node.getKey()).setTwin(node);
                     node = node.getRight();
