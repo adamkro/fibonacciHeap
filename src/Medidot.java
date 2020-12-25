@@ -58,9 +58,9 @@ public class Medidot {
 //        seq1((int)Math.pow(2,11));
 //        seq1((int)Math.pow(2,12));
 
-        seq2(50000000);
-        //seq2(6000);
-        //seq2(7000);
+        seq2(1000);
+        seq2(2000);
+        seq2(3000);
 
     }
 }
