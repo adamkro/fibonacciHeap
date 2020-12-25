@@ -54,9 +54,9 @@ public class Medidot {
 
 
     public static void main (String[] args){
-//        seq1((int)Math.pow(2,10));
-//        seq1((int)Math.pow(2,11));
-//        seq1((int)Math.pow(2,12));
+        seq1((int)Math.pow(2,10));
+        seq1((int)Math.pow(2,11));
+        seq1((int)Math.pow(2,12));
 
         seq2(1000);
         seq2(2000);
