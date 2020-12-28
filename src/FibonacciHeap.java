@@ -1,7 +1,5 @@
-import com.sun.deploy.security.SelectableSecurityManager;
 
 import java.util.Arrays;
-import java.util.Stack;
 
 /**
  * FibonacciHeap
@@ -19,49 +17,6 @@ public class FibonacciHeap
     private HeapNode min;
     private HeapNode root;
 
-
-    public void display() {
-        display(root);
-        System.out.println();
-    }
-
-    private void display(HeapNode c) {
-        System.out.print("(");
-        if (c == null) {
-            System.out.print(")");
-            return;
-        } else {
-            HeapNode temp = c;
-            do {
-                System.out.print(temp.getKey());
-                HeapNode k = temp.getChild();
-                display(k);
-                System.out.print("->");
-                temp = temp.getRight();
-            } while (temp != c);
-            System.out.print(")");
-        }
-    }
-    public void displayRoots(){
-        if (isEmpty()){
-            System.out.println("Roots: []");
-            return;
-        }
-        HeapNode node = root;
-        HeapNode r = root;
-        StringBuilder row = new StringBuilder("Roots: ");
-        do {
-            if (node == min)
-                row.append("*");
-            row
-                    .append(node.getKey())
-                    .append("(")
-                    .append(node.getDegree())
-                    .append(") --> ");
-            node = node.getRight();
-        } while (node != r);
-        System.out.println(row.toString());
-    }
    /**
     * public boolean isEmpty()
     *
@@ -69,7 +24,7 @@ public class FibonacciHeap
     *
     * The method returns true if and only if the heap
     * is empty.
-    *
+    * Complexity - O(1)
     */
     public boolean isEmpty()
     {
@@ -102,6 +57,7 @@ public class FibonacciHeap
     * Creates a node (of type HeapNode) which contains the given key, and inserts it into the heap.
     *
     * Returns the new node created.
+     * Complexity - O(1)
     */
     public HeapNode insert(int key){
         HeapNode node = new HeapNode(key);
@@ -110,18 +66,34 @@ public class FibonacciHeap
         return node;
     }
 
+    /**
+     * public void insertNode(HeapNode x)
+     * insert a node as head of roots.
+     * updates min & number of trees
+     * Complexity - O(1)
+     */
     public void insertNode(HeapNode x){
         updateMin(x);
         setRoot(x);
         potentialTrees++;
     }
 
+    /**
+     * private void setRoot(HeapNode node)
+     * insert a node as head of roots.
+     * Complexity - O(1)
+     */
     private void setRoot(HeapNode node){
         if (size != 0)
             node.insertBetween(root.left, root);
         root = node;
     }
 
+    /**
+     * private void updateMin(HeapNode node)
+     * if node's key is smaller than current min, update min
+     * Complexity - O(1)
+     */
     private void updateMin(HeapNode node){
         if (min == null || node.getKey() < min.getKey())
             min = node;
@@ -131,7 +103,7 @@ public class FibonacciHeap
     * public void deleteMin()
     *
     * Delete the node containing the minimum key.
-    *
+    * Complexity - O(n)
     */
     public void deleteMin()
     {
@@ -166,6 +138,11 @@ public class FibonacciHeap
         }
     }
 
+    /**
+     * private void insertChain(HeapNode startChain, HeapNode endCHain, HeapNode left, HeapNode right)
+     * insert a chain from startChain to endChain between left and right.
+     * Complexity - O(1)
+     */
     private void insertChain(HeapNode startChain, HeapNode endCHain, HeapNode left, HeapNode right) {
         startChain.setLeft(left);
         left.setRight(startChain);
@@ -173,12 +150,22 @@ public class FibonacciHeap
         right.setLeft(endCHain);
     }
 
+    /**
+     * public void successiveLinking (HeapNode x)
+     * successive link method as taught in class
+     * Complexity - O(n)
+     */
     public void successiveLinking (HeapNode x){
         HeapNode[] Buckets = new HeapNode[(int)Math.ceil(Math.log(size)/Math.log(2))+1];
-        //לוודא שהדליים מאותחילם ל-null
         nodesToBuckets(x,Buckets);
         makeHeapFromBuckets(Buckets);
     }
+
+    /**
+     * public void nodesToBuckets (HeapNode x, HeapNode[] Buckets)
+     * updates Buckets array with binomial trees by degree
+     * Complexity - O(log n)
+     */
 
     public void nodesToBuckets (HeapNode x, HeapNode[] Buckets){
         x.getLeft().setRight(null);
@@ -195,6 +182,14 @@ public class FibonacciHeap
         }
     }
 
+    /**
+     * public void makeHeapFromBuckets (HeapNode[] Buckets)
+     * updates current heap based on Buckets array binomial trees
+     * Complexity - O(log n) ####################
+     * ###################3
+     * ###################
+     * check this///@#$@#%(@#%
+     */
     public void makeHeapFromBuckets (HeapNode[] Buckets){
         potentialTrees = 0;
         HeapNode rootNode = null;
@@ -223,6 +218,12 @@ public class FibonacciHeap
        min =  newMin;
     }
 
+    /**
+     * public HeapNode link (HeapNode x,HeapNode y)
+     * links x and y as taught in class
+     * return new root of tree
+     * Complexity - O(1)
+     */
     public HeapNode link (HeapNode x,HeapNode y){
         linksCount++;
         HeapNode tmp;
@@ -247,7 +248,7 @@ public class FibonacciHeap
     * public HeapNode findMin()
     *
     * Return the node of the heap whose key is minimal.
-    *
+    * Complexity - O(1)
     */
     public HeapNode findMin(){
     	return min;
@@ -257,7 +258,7 @@ public class FibonacciHeap
     * public void meld (FibonacciHeap heap2)
     *
     * Meld the heap with heap2
-    *
+    * Complexity - O(1)
     */
    public void meld (FibonacciHeap heap2) {
        if (heap2.isEmpty())
@@ -272,12 +273,11 @@ public class FibonacciHeap
        size += heap2.size();
    }
 
-   // 1 --> 2 --> 3 --> 4 -- > 5 --> heap2 --> heap2 --> heap2
    /**
     * public int size()
     *
     * Return the number of elements in the heap
-    *
+    * Complexity - O(1)
     */
     public int size(){
     	return this.size;
@@ -287,7 +287,7 @@ public class FibonacciHeap
     * public int[] countersRep()
     *
     * Return a counters array, where the value of the i-th entry is the number of trees of order i in the heap.
-    *
+    * Complexity - O(n)
     */
     public int[] countersRep()
     {
@@ -315,7 +315,7 @@ public class FibonacciHeap
     * public void delete(HeapNode x)
     *
     * Deletes the node x from the heap.
-    *
+    * Complexity - O(n)
     */
     public void delete(HeapNode x)
     {
@@ -334,6 +334,7 @@ public class FibonacciHeap
     *
     * The function decreases the key of the node x by delta. The structure of the heap should be updated
     * to reflect this chage (for example, the cascading cuts procedure should be applied if needed).
+    * Complexity - O(n)
     */
     public void decreaseKey(HeapNode x, int delta)
     {
@@ -346,6 +347,11 @@ public class FibonacciHeap
         cascadingCuts(x,x.getParent());
     }
 
+    /**
+     * public void cascadingCuts(HeapNode x, HeapNode parent)
+     * cascading-cuts taught in class
+     * Complexity - O(1)
+     */
     public void cascadingCuts(HeapNode x, HeapNode parent)
     {
         cut(x,parent);
@@ -359,6 +365,11 @@ public class FibonacciHeap
         }
     }
 
+    /**
+     * public void cut(HeapNode x, HeapNode parent)
+     * cut node x from it's parent, and insert to heap
+     * Complexity - O(1)
+     */
     public void cut(HeapNode x, HeapNode parent)
     {
         cutsCount++;
@@ -390,6 +401,7 @@ public class FibonacciHeap
     * This function returns the current potential of the heap, which is:
     * Potential = #trees + 2*#marked
     * The potential equals to the number of trees in the heap plus twice the number of marked nodes in the heap.
+    * Complexity - O(1)
     */
     public int potential()
     {
@@ -403,6 +415,7 @@ public class FibonacciHeap
     * A link operation is the operation which gets as input two trees of the same rank, and generates a tree of
     * rank bigger by one, by hanging the tree which has larger value in its root on the tree which has smaller value
     * in its root.
+    * Complexity - O(1)
     */
     public static int totalLinks()
     {
@@ -414,6 +427,7 @@ public class FibonacciHeap
     *
     * This static function returns the total number of cut operations made during the run-time of the program.
     * A cut operation is the operation which diconnects a subtree from its parent (during decreaseKey/delete methods).
+    * Complexity - O(1)
     */
     public static int totalCuts()
     {
@@ -426,6 +440,7 @@ public class FibonacciHeap
     * This static function returns the k minimal elements in a binomial tree H.
     * The function should run in O(k*deg(H)).
     * You are not allowed to change H.
+      * Complexity - O(k*deg(H))
     */
     public static int[] kMin(FibonacciHeap H, int k)
     {
@@ -485,6 +500,7 @@ public class FibonacciHeap
        public HeapNode getTwin() {
            return twin;
        }
+
        public void setTwin(HeapNode x) {
            twin = x;
        }
@@ -512,11 +528,20 @@ public class FibonacciHeap
        public boolean isMarked() {
            return mark;
        }
-
+       /**
+        * private void decreaseBy(int delta)
+        * decrease this node's key by delta
+        * Complexity - O(1)
+        */
        private void decreaseBy(int delta) {
            key -= delta;
        }
 
+       /**
+        * private void insertBetween(HeapNode start, HeapNode end )
+        * insert this node between start and end (linked list)
+        * Complexity - O(1)
+        */
        private void insertBetween(HeapNode start, HeapNode end ){
            this.left.right = end; // last --> end
            end.left = this.left; // last <-- end
@@ -556,8 +581,6 @@ public class FibonacciHeap
        public String toString() {
         String l = left != null ? ""+left.getKey(): "";
         String r = right != null ? ""+right.getKey(): "";
-
-
            return
                    l + "<-- " + key + " ("+degree+ ") " + " --->" + r +
                    '}';

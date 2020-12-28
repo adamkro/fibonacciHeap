@@ -1,6 +1,7 @@
 public class Medidot {
 
     public static void seq1 (int m){
+        int cuts;
         long startTime = System.nanoTime();
         FibonacciHeap.HeapNode[] arr = new  FibonacciHeap.HeapNode[m+1];
         FibonacciHeap heap = new FibonacciHeap();
@@ -8,16 +9,18 @@ public class Medidot {
             arr[i] = heap.insert(i);
         }
         heap.deleteMin();
-        for (int i = 0 ; i < (int)Math.log(m)/Math.log(2); i++){
+        for (int i = 0 ; i < (int)(Math.log(m)/Math.log(2)); i++){
             double sigma = 0;
             for (int k = 1; k <= i; k++)
                 sigma += Math.pow(0.5,k);
             sigma = m*sigma +2;
             heap.decreaseKey(arr[(int)sigma],m+1);
+            cuts = FibonacciHeap.cutsCount;
         }
-        //heap.decreaseKey(arr[m-1],m+1);
+        heap.decreaseKey(arr[m-1],m+1);
 //        System.out.println(heap.getPotentialMarks());//
 //        System.out.println(heap.getPotentialTrees());//
+        cuts = FibonacciHeap.cutsCount;
         long endTime = System.nanoTime();
         long totalTime = endTime - startTime;
         System.out.println("the m is "+m);
@@ -58,9 +61,9 @@ public class Medidot {
         seq1((int)Math.pow(2,11));
         seq1((int)Math.pow(2,12));
 
-        seq2(1000);
-        seq2(2000);
-        seq2(3000);
+//        seq2(1000);
+//        seq2(2000);
+//        seq2(3000);
 
     }
 }
