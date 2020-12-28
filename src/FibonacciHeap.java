@@ -164,7 +164,7 @@ public class FibonacciHeap
     /**
      * public void nodesToBuckets (HeapNode x, HeapNode[] Buckets)
      * updates Buckets array with binomial trees by degree
-     * Complexity - O(log n)
+     * Complexity - O(n)
      */
 
     public void nodesToBuckets (HeapNode x, HeapNode[] Buckets){
