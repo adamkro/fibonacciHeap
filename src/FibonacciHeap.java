@@ -185,10 +185,7 @@ public class FibonacciHeap
     /**
      * public void makeHeapFromBuckets (HeapNode[] Buckets)
      * updates current heap based on Buckets array binomial trees
-     * Complexity - O(log n) ####################
-     * ###################3
-     * ###################
-     * check this///@#$@#%(@#%
+     * Complexity - O(log n)
      */
     public void makeHeapFromBuckets (HeapNode[] Buckets){
         potentialTrees = 0;
@@ -559,7 +556,7 @@ public class FibonacciHeap
 
        public void setRight(HeapNode right) {
            this.right = right;
-       } ///////////// להחזיר לprivate
+       }
 
        private void changeDegreeBy(int delta) {
            this.degree += delta;
@@ -567,7 +564,7 @@ public class FibonacciHeap
 
        public void setLeft(HeapNode left) {
            this.left = left;
-       } ///////////// להחזיר לprivate
+       }
 
        private void setChild(HeapNode child) {
            this.child = child;
